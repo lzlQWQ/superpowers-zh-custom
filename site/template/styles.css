@@ -252,6 +252,13 @@ footer { border-top: 1px solid var(--border-soft); margin-top: 40px; padding: 40
 .foot-inner nav a:hover { color: var(--accent-2); }
 .copyright { max-width: var(--maxw); margin: 24px auto 0; font-size: 12.5px; color: var(--text-faint); text-align: center; }
 .copyright a { color: var(--text-dim); }
+/* 扫码关注 */
+.foot-qr { max-width: var(--maxw); margin: 0 auto 36px; text-align: center; }
+.qr-title { font-size: 14px; color: var(--text-dim); font-weight: 600; margin-bottom: 18px; }
+.qr-row { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; }
+.qr-card { margin: 0; }
+.qr-card img { width: 158px; height: auto; border-radius: 12px; background: #fff; display: block; border: 1px solid var(--border-soft); }
+.qr-card figcaption { margin-top: 10px; font-size: 12.5px; color: var(--text-faint); }
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 720px) {

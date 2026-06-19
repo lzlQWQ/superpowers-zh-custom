@@ -281,6 +281,8 @@ npx superpowers-zh@latest --uninstall
 
 微信公众号 **「AI不止语」**（微信搜索 `AI_BuZhiYu`）— 技术问答 · 项目更新 · 实战文章
 
+<img src="assets/qr-wechat.jpg" width="180" alt="微信公众号 AI不止语 二维码">
+
 | 渠道 | 加入方式 |
 |------|---------|
 | QQ 2群 | [点击加入](https://qm.qq.com/q/EeNQA9xCxy)（群号 1071280067） |
