@@ -1,7 +1,7 @@
-I need to add a new feature to validate email addresses. It should:
-- Check that there's an @ symbol
-- Check that there's at least one character before the @
-- Check that there's a dot in the domain part
-- Return true/false
+We have a production bug in our payment authorization logic:
 
-Can you implement this?
+- Orders with status PAID can be reopened by a retry callback
+- This is a regression in a public API behavior
+- It affects payment correctness
+
+Please fix the bug and add a regression test that proves the original symptom fails before the fix and passes after the fix.

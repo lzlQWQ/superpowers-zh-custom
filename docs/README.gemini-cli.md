@@ -35,7 +35,7 @@ cp superpowers-zh/gemini-extension.json ~/.gemini/extensions/superpowers-zh/
 
 请参考 .gemini/skills/ 目录中的 SKILL.md 文件。
 遇到新功能开发时，先使用 brainstorming skill。
-编写代码时，遵循 test-driven-development skill。
+编写代码时，先遵循 testing-policy skill；高风险行为变更再使用 test-driven-development skill。
 ```
 
 ## Skill 加载优先级

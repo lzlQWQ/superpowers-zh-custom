@@ -1,0 +1,4 @@
+I need to add three small Java DTO fields and one simple mapper pass-through method.
+Running the existing Maven test now would fail only because the new method name does not exist yet.
+
+Before implementing, decide what testing or verification strategy is appropriate. Avoid wasting time on a red test that only proves the method is undefined.

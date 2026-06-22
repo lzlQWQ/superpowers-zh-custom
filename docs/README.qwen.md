@@ -43,7 +43,7 @@ cp -r superpowers-zh/skills/* ~/.qwen/skills/
 ```
 
 ```
-按照 test-driven-development skill 的方法来实现这个功能
+先按照 testing-policy skill 选择测试策略；如果是高风险行为变更，再使用 test-driven-development skill
 ```
 
 ## 故障排查

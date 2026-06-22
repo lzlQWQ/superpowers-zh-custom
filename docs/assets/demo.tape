@@ -27,7 +27,7 @@ Sleep 200ms
 Type "  Detected: Claude Code"
 Enter
 Sleep 200ms
-Type "  Installing 20 skills to .claude/skills/ ..."
+Type "  Installing 21 skills to .claude/skills/ ..."
 Enter
 Sleep 500ms
 Type "  ✓ 14 translated skills installed"

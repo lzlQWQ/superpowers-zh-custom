@@ -147,10 +147,41 @@ else
     exit 1
 fi
 
+if assert_contains "$output" "testing-policy\|testing policy\|测试策略" "Mentions testing-policy requirement"; then
+    : # pass
+else
+    exit 1
+fi
+
 echo ""
 
-# Test 9: Verify main branch warning
-echo "Test 9: Main branch red flag..."
+# Test 9: Verify implementer testing report
+echo "Test 9: Implementer testing report..."
+
+output=$(run_claude "In subagent-driven-development, what testing-related fields must an implementer report after completing a task?" 30)
+
+if assert_contains "$output" "strategy\|策略" "Reports testing strategy"; then
+    : # pass
+else
+    exit 1
+fi
+
+if assert_contains "$output" "reason\|理由" "Reports strategy reason"; then
+    : # pass
+else
+    exit 1
+fi
+
+if assert_contains "$output" "checkpoint\|检查点" "Reports validation checkpoint"; then
+    : # pass
+else
+    exit 1
+fi
+
+echo ""
+
+# Test 10: Verify main branch warning
+echo "Test 10: Main branch red flag..."
 
 output=$(run_claude "In subagent-driven-development, is it okay to start implementation directly on the main branch?" 30)
 

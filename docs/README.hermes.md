@@ -9,7 +9,7 @@ cd /your/project
 npx superpowers-zh --tool hermes
 ```
 
-安装脚本会将 20 个 skills 复制到 `.hermes/skills/` 目录，并自动生成 `HERMES.md` 引导文件（含工具映射表和 skills 列表）。
+安装脚本会将 21 个 skills 复制到 `.hermes/skills/` 目录，并自动生成 `HERMES.md` 引导文件（含工具映射表和 skills 列表）。
 
 如果项目中已存在 `.hermes` 目录或 `HERMES.md` 文件，也会被自动检测到：
 

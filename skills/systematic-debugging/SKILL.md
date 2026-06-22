@@ -181,7 +181,8 @@ metadata:
    - 尽可能用自动化测试
    - 没有测试框架就写一次性测试脚本
    - 修复前必须先有测试
-   - 使用 `superpowers:test-driven-development` 技能来编写规范的失败测试
+   - 使用 `superpowers:testing-policy` 判断验证等级；bug 修复通常是 A 必须 TDD
+   - 使用 `superpowers:test-driven-development` 编写能进入断言层的失败测试，不能把编译失败当作红灯
 
 2. **实施单一修复**
    - 修复已定位的根本原因
@@ -289,7 +290,8 @@ metadata:
 - **`condition-based-waiting.md`** - 用条件轮询替代硬编码等待时间
 
 **相关技能：**
-- **superpowers:test-driven-development** - 用于创建失败测试用例（第四阶段，第 1 步）
+- **superpowers:testing-policy** - 用于选择修复前后的验证等级
+- **superpowers:test-driven-development** - 用于创建有效失败测试用例（第四阶段，第 1 步）
 - **superpowers:verification-before-completion** - 在宣称成功之前验证修复确实有效
 
 ## 实际效果

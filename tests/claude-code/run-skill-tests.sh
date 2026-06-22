@@ -73,6 +73,7 @@ done
 
 # List of skill tests to run (fast unit tests)
 tests=(
+    "test-testing-policy.sh"
     "test-subagent-driven-development.sh"
 )
 

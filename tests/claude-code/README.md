@@ -25,7 +25,7 @@ This test suite verifies that skills are loaded correctly and Claude follows the
 
 ### Run specific test:
 ```bash
-./run-skill-tests.sh --test test-subagent-driven-development.sh
+./run-skill-tests.sh --test test-testing-policy.sh
 ```
 
 ### Run with verbose output:
@@ -91,6 +91,12 @@ Tests skill content and requirements (~2 minutes):
 - Spec compliance reviewer skepticism documented
 - Review loops documented
 - Task context provision documented
+
+#### test-testing-policy.sh
+Tests testing policy behavior (~2 minutes):
+- Undefined method or compile failure is not accepted as a valid red test
+- Low-risk small tasks can share validation checkpoints
+- Subagent implementers report testing strategy, reason, checkpoint, and evidence
 
 ### Integration Tests (use --integration flag)
 
