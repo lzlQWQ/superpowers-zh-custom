@@ -95,8 +95,11 @@ Tests skill content and requirements (~2 minutes):
 #### test-testing-policy.sh
 Tests testing policy behavior (~2 minutes):
 - Undefined method or compile failure is not accepted as a valid red test
-- Low-risk small tasks can share validation checkpoints
-- Subagent implementers report testing strategy, reason, checkpoint, and evidence
+- Low-risk small tasks share one heavy-validation checkpoint
+- Subagent implementers report strategy, reason, validation budget, checkpoint, and evidence
+- Slow Maven bug fixes default to implementation-first or user verification, not TDD
+- Heavy validation timeouts stop and report instead of increasing timeout and rerunning
+- Payment/security/data-integrity bugs still use strong validation
 
 ### Integration Tests (use --integration flag)
 

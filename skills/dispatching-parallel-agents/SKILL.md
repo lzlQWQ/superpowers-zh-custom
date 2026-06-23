@@ -83,7 +83,7 @@ Task("修复 tool-approval-race-conditions.test.ts 的失败")
 当智能体返回时：
 - 阅读每个总结
 - 验证修复之间没有冲突
-- 运行完整测试套件
+- 按 `superpowers:testing-policy` 运行预算内集成检查点
 - 集成所有更改
 
 ## 智能体提示词结构
@@ -158,7 +158,7 @@ Task("修复 tool-approval-race-conditions.test.ts 的失败")
 - 智能体 2：修复了事件结构 bug（threadId 位置不对）
 - 智能体 3：添加了等待异步工具执行完成的逻辑
 
-**集成：** 所有修复互相独立，无冲突，完整测试套件全部通过
+**集成：** 所有修复互相独立，无冲突，预算内集成检查点通过
 
 **节省的时间：** 3 个问题并行解决 vs 顺序解决
 

@@ -105,7 +105,7 @@ git worktree add "$path" -b "$BRANCH_NAME"
 cd "$path"
 ```
 
-**沙盒回退：** 如果 `git worktree add` 因权限错误（沙盒拒绝）失败，告诉用户沙盒阻止了 worktree 创建，你将在当前目录原地工作。然后原地运行 setup 和基线测试。
+**沙盒回退：** 如果 `git worktree add` 因权限错误（沙盒拒绝）失败，告诉用户沙盒阻止了 worktree 创建，你将在当前目录原地工作。然后只运行预算内的项目设置和轻量基线核查。
 
 ## 步骤 2：项目设置
 
@@ -126,24 +126,28 @@ if [ -f pyproject.toml ]; then poetry install; fi
 if [ -f go.mod ]; then go mod download; fi
 ```
 
-## 步骤 3：验证基线干净
+## 步骤 3：轻量基线核查
 
-运行测试确保工作区初始状态干净：
+使用 `superpowers:testing-policy` 判断是否允许重型基线验证。默认不在开局运行 Maven/Gradle、全量测试、完整 build 或历史上超过 30 秒的命令。
+
+优先做轻量核查：
 
 ```bash
-# 使用项目对应的命令
-npm test / cargo test / pytest / go test ./...
+git status --short
+# 如项目有快速检查，可运行 lint/typecheck/smoke check
 ```
 
-**如果测试失败：** 报告失败，询问是继续还是排查。
+**如果计划明确允许重型基线验证：** 按预算运行一次指定命令。超时或超过 120 秒就停止，不自动重跑。
 
-**如果测试通过：** 报告就绪。
+**如果轻量核查发现已有问题：** 报告问题，询问是继续还是排查。
+
+**如果未运行重型验证：** 报告“未运行编译/测试”，并说明后续会按计划预算处理。
 
 ### 报告
 
 ```
 工作树已就绪：<full-path>
-测试通过（<N> 个测试，0 个失败）
+轻量基线核查完成；未运行编译/测试（如适用）
 准备实现 <feature-name>
 ```
 
@@ -161,7 +165,7 @@ npm test / cargo test / pytest / go test ./...
 | 都不存在 | 检查 instructions 文件，再默认 `.worktrees/` |
 | 目录未被忽略 | 添加到 .gitignore + 提交 |
 | 创建时权限错误 | 沙盒回退，原地工作 |
-| 基线测试失败 | 报告失败 + 询问 |
+| 轻量基线发现问题 | 报告失败 + 询问 |
 | 无 package.json/Cargo.toml | 跳过依赖安装 |
 
 ## 常见错误
@@ -186,7 +190,7 @@ npm test / cargo test / pytest / go test ./...
 - **问题：** 造成不一致、违反项目约定
 - **修复：** 遵循优先级：明确 instructions > 现有项目本地目录 > 默认
 
-### 带着失败的测试继续
+### 带着失败的基线继续
 
 - **问题：** 无法区分新 bug 和已有问题
 - **修复：** 报告失败，获得明确许可后再继续
@@ -199,7 +203,7 @@ npm test / cargo test / pytest / go test ./...
 - 在已有原生 worktree 工具（如 `EnterWorktree`）的情况下还用 `git worktree add`。这是 #1 错误——有就用。
 - 跳过步骤 1a 直接跳到步骤 1b 的 git 命令
 - 不验证已忽略就创建项目本地 worktree
-- 跳过基线测试验证
+- 未核对验证预算就运行重型基线测试
 - 不询问就带着失败的测试继续
 
 **始终：**
@@ -209,7 +213,7 @@ npm test / cargo test / pytest / go test ./...
 - 遵循目录优先级：明确 instructions > 现有项目本地目录 > 默认
 - 项目本地目录验证已忽略
 - 自动检测并运行项目设置
-- 验证测试基线干净
+- 做轻量基线核查，重型验证只按预算执行
 
 ## 集成
 

@@ -43,7 +43,7 @@ cp -r superpowers-zh/skills/* ~/.qwen/skills/
 ```
 
 ```
-先按照 testing-policy skill 选择测试策略；如果是高风险行为变更，再使用 test-driven-development skill
+先按照 testing-policy skill 选择验证预算和测试策略；如果是高风险行为变更，再使用 test-driven-development skill
 ```
 
 ## 故障排查

@@ -123,16 +123,16 @@ AI：在开始实现之前，我需要了解几个关键问题：
 | Skill | 用途 |
 |-------|------|
 | **头脑风暴** (brainstorming) | 需求分析 → 设计规格，不写代码先想清楚 |
-| **编写计划** (writing-plans) | 把规格拆成带测试策略和验证检查点的实施步骤 |
-| **执行计划** (executing-plans) | 按计划逐步实施，按检查点合并验证 |
-| **测试策略** (testing-policy) | 按风险选择 TDD、目标测试、轻量验证或跳过自动化测试 |
-| **测试驱动开发** (test-driven-development) | 高风险行为变更和 bug 修复使用有效红绿灯 |
+| **编写计划** (writing-plans) | 把规格拆成带验证预算和检查点的实施步骤 |
+| **执行计划** (executing-plans) | 按计划逐步实施，按预算合并验证 |
+| **测试策略** (testing-policy) | 按验证预算控制重型编译/测试，选择 TDD、轻量核查或用户验收 |
+| **测试驱动开发** (test-driven-development) | 仅高风险场景使用低成本有效红绿灯 |
 | **系统化调试** (systematic-debugging) | 四阶段调试法：定位→分析→假设→修复 |
 | **请求代码审查** (requesting-code-review) | 派遣审查 agent 检查代码质量 |
 | **接收代码审查** (receiving-code-review) | 技术严谨地处理审查反馈，拒绝敷衍 |
-| **完成前验证** (verification-before-completion) | 证据先行——声称完成前必须有风险匹配验证 |
+| **完成前验证** (verification-before-completion) | 精确汇报验证范围，未跑重型验证时给出用户验收路径 |
 | **派遣并行 Agent** (dispatching-parallel-agents) | 多任务并发执行 |
-| **子 Agent 驱动开发** (subagent-driven-development) | 每个任务一个 agent，按检查点验证，两轮审查 |
+| **子 Agent 驱动开发** (subagent-driven-development) | 每个任务一个 agent，按验证预算合并检查点，两轮审查 |
 | **Git Worktree 使用** (using-git-worktrees) | 隔离式特性开发 |
 | **完成开发分支** (finishing-a-development-branch) | 合并/PR/保留/丢弃四选一 |
 | **编写 Skills** (writing-skills) | 创建新 skill 的方法论 |

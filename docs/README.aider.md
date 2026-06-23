@@ -31,7 +31,7 @@ Aider 原生支持 `CONVENTIONS.md` 文件。在其中引用 skills：
 Skills 位于 `.aider/skills/` 目录，每个子目录的 SKILL.md 定义一个工作流。
 
 - 新功能开发：先使用 brainstorming skill
-- 编写代码：先遵循 testing-policy skill；高风险行为变更再使用 test-driven-development skill
+- 编写代码：先遵循 testing-policy skill 选择验证预算；只有高风险行为变更才使用 test-driven-development skill
 - 调试问题：使用 systematic-debugging skill
 ```
 
