@@ -58,6 +58,17 @@ else
 fi
 echo ""
 
+# Test: explicit lightweight project agent orchestration
+echo ">>> Test 5: dispatching-project-agents"
+if "$SCRIPT_DIR/run-test.sh" "dispatching-project-agents" "$PROMPTS_DIR/dispatching-project-agents.txt"; then
+    PASSED=$((PASSED + 1))
+    RESULTS="$RESULTS\nPASS: dispatching-project-agents"
+else
+    FAILED=$((FAILED + 1))
+    RESULTS="$RESULTS\nFAIL: dispatching-project-agents"
+fi
+echo ""
+
 echo "=== Summary ==="
 echo -e "$RESULTS"
 echo ""

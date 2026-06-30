@@ -32,7 +32,7 @@ Fetch and follow instructions from https://raw.githubusercontent.com/jnMetaCode/
 
 3. 重启 Codex。
 
-4. **子代理 skills（可选）：** `dispatching-parallel-agents` 和 `subagent-driven-development` 需要 Codex 的多代理功能。在 Codex 配置中添加：
+4. **子代理 skills（可选）：** `dispatching-parallel-agents`、`dispatching-project-agents` 和 `subagent-driven-development` 需要 Codex 的多代理功能。在 Codex 配置中添加：
    ```toml
    [features]
    multi_agent = true

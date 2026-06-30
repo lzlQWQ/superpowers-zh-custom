@@ -1,0 +1,9 @@
+请使用 dispatching-project-agents 这个技能，用轻量子代理执行任务。
+
+我有一份规范文档和开发计划，涉及三个工程：
+
+1. web-admin：新增组织分配 UI
+2. api-service：新增组织分配接口和校验
+3. mobile-app：在个人资料页展示已分配组织
+
+根目录 AGENTS.md 指向 CLAUDE.md，每个工程可能还有自己的 AGENTS.md。请一个工程一个轻量子代理，主线程负责跟踪和审核。

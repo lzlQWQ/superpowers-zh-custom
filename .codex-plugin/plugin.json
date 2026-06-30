@@ -1,7 +1,7 @@
 {
   "name": "superpowers-zh",
   "version": "1.6.0",
-  "description": "AI 编程超能力中文增强版：头脑风暴、subagent 驱动开发、规划、测试策略、TDD、调试、代码审查、收尾工作流，附 4 个中文 skills 沉淀。",
+  "description": "AI 编程超能力中文增强版：头脑风暴、subagent 驱动开发、工程子代理编排、规划、测试策略、TDD、调试、代码审查、收尾工作流，附 4 个中文 skills 沉淀。",
   "author": {
     "name": "jnMetaCode",
     "url": "https://github.com/jnMetaCode"
@@ -11,6 +11,7 @@
   "license": "MIT",
   "keywords": [
     "brainstorming",
+    "dispatching-project-agents",
     "subagent-driven-development",
     "skills",
     "planning",
