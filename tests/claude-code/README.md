@@ -109,8 +109,8 @@ Full workflow execution test (~10-30 minutes):
 - Creates implementation plan with 2 tasks
 - Executes plan using subagent-driven-development
 - Verifies actual behaviors:
-  - Plan read once at start (not per task)
-  - Full task text provided in subagent prompts
+  - Plans read once at start before work package grouping
+  - Full work package text provided in subagent prompts
   - Subagents perform self-review before reporting
   - Spec compliance review happens before code quality
   - Spec reviewer reads code independently

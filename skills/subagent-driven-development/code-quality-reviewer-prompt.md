@@ -11,7 +11,7 @@ Task tool (superpowers:code-reviewer):
   使用模板 requesting-code-review/code-reviewer.md
 
   WHAT_WAS_IMPLEMENTED: [来自实现者的报告]
-  PLAN_OR_REQUIREMENTS: [plan-file] 中的任务 N
+  PLAN_OR_REQUIREMENTS: [plans/NN-slice-name.md 的完整计划内容]
   BASE_SHA: [任务开始前的提交]
   HEAD_SHA: [当前提交]
   DESCRIPTION: [任务摘要]

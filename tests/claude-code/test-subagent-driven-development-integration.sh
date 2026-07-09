@@ -11,8 +11,8 @@ echo " Integration Test: subagent-driven-development"
 echo "========================================"
 echo ""
 echo "This test executes a real plan using the skill and verifies:"
-echo "  1. Plan is read once (not per task)"
-echo "  2. Full task text provided to subagents"
+echo "  1. Plans are read once before grouping work packages"
+echo "  2. Full work package text is provided to subagents"
 echo "  3. Subagents perform self-review"
 echo "  4. Spec compliance review before code quality"
 echo "  5. Review loops when issues found"
@@ -42,17 +42,33 @@ cat > package.json <<'EOF'
 }
 EOF
 
-mkdir -p src test docs/superpowers/plans
+mkdir -p src test docs/superpowers/2026-07-09-math-functions/plans
 
-# Create a simple implementation plan
-cat > docs/superpowers/plans/implementation-plan.md <<'EOF'
-# Test Implementation Plan
+# Create simple vertical slice implementation plans
+cat > docs/superpowers/2026-07-09-math-functions/plans/01-create-add-function.md <<'EOF'
+# Create Add Function
 
-This is a minimal plan to test the subagent-driven-development workflow.
+**所属任务：** 2026-07-09-math-functions
+**计划文件：** plans/01-create-add-function.md
+**Blocked by：** None
 
-## Task 1: Create Add Function
+**目标：** Create a function that adds two numbers.
+**端到端范围：** Source function and Node test coverage.
+**技术栈：** Node.js ES modules, node:test
 
-Create a function that adds two numbers.
+**验收标准：**
+- [ ] Function named `add` is exported from `src/math.js`
+- [ ] `add(2, 3)` returns `5`
+- [ ] `add(0, 0)` returns `0`
+- [ ] `add(-1, 1)` returns `0`
+
+**测试策略：** B 实现优先目标验证
+**策略理由：** Simple isolated behavior; target test after implementation is enough.
+**验证预算：** Allow `npm test` once for this slice.
+**验证检查点：** 立即执行
+**用户验收路径：** Run `npm test`.
+
+## 实施步骤
 
 **File:** `src/math.js`
 
@@ -75,10 +91,33 @@ export function add(a, b) {
 - `add(-1, 1)` returns `0`
 
 **Verification:** `npm test`
+EOF
 
-## Task 2: Create Multiply Function
+cat > docs/superpowers/2026-07-09-math-functions/plans/02-create-multiply-function.md <<'EOF'
+# Create Multiply Function
 
-Create a function that multiplies two numbers.
+**所属任务：** 2026-07-09-math-functions
+**计划文件：** plans/02-create-multiply-function.md
+**Blocked by：** plans/01-create-add-function.md
+
+**目标：** Create a function that multiplies two numbers.
+**端到端范围：** Source function and Node test coverage.
+**技术栈：** Node.js ES modules, node:test
+
+**验收标准：**
+- [ ] Function named `multiply` is exported from `src/math.js`
+- [ ] `multiply(2, 3)` returns `6`
+- [ ] `multiply(0, 5)` returns `0`
+- [ ] `multiply(-2, 3)` returns `-6`
+- [ ] No extra math functions are added
+
+**测试策略：** B 实现优先目标验证
+**策略理由：** Simple isolated behavior; target test after implementation is enough.
+**验证预算：** Allow `npm test` once for this slice.
+**验证检查点：** 立即执行
+**用户验收路径：** Run `npm test`.
+
+## 实施步骤
 
 **File:** `src/math.js` (add to existing file)
 
@@ -121,14 +160,15 @@ OUTPUT_FILE="$TEST_PROJECT/claude-output.txt"
 
 # Create prompt file
 cat > "$TEST_PROJECT/prompt.txt" <<'EOF'
-I want you to execute the implementation plan at docs/superpowers/plans/implementation-plan.md using the subagent-driven-development skill.
+I want you to execute the implementation plans in docs/superpowers/2026-07-09-math-functions/plans/ using the subagent-driven-development skill.
 
 IMPORTANT: Follow the skill exactly. I will be verifying that you:
-1. Read the plan once at the beginning
-2. Provide full task text to subagents (don't make them read files)
-3. Ensure subagents do self-review before reporting
-4. Run spec compliance review before code quality review
-5. Use review loops when issues are found
+1. Read the plans once at the beginning
+2. Build a dependency graph and group tasks into safe work packages
+3. Provide full work package text to subagents (don't make them read files)
+4. Ensure subagents do self-review before reporting
+5. Run spec compliance review before code quality review
+6. Use review loops when issues are found
 
 Begin now. Execute the plan.
 EOF
@@ -136,14 +176,15 @@ EOF
 # Note: We use a longer timeout since this is integration testing
 # Use --allowed-tools to enable tool usage in headless mode
 # IMPORTANT: Run from superpowers directory so local dev skills are available
-PROMPT="Change to directory $TEST_PROJECT and then execute the implementation plan at docs/superpowers/plans/implementation-plan.md using the subagent-driven-development skill.
+PROMPT="Change to directory $TEST_PROJECT and then execute the implementation plans in docs/superpowers/2026-07-09-math-functions/plans/ using the subagent-driven-development skill.
 
 IMPORTANT: Follow the skill exactly. I will be verifying that you:
-1. Read the plan once at the beginning
-2. Provide full task text to subagents (don't make them read files)
-3. Ensure subagents do self-review before reporting
-4. Run spec compliance review before code quality review
-5. Use review loops when issues are found
+1. Read the plans once at the beginning
+2. Build a dependency graph and group tasks into safe work packages
+3. Provide full work package text to subagents (don't make them read files)
+4. Ensure subagents do self-review before reporting
+5. Run spec compliance review before code quality review
+6. Use review loops when issues are found
 
 Begin now. Execute the plan."
 
@@ -200,7 +241,7 @@ task_count=$(grep -c '"name":"Task"' "$SESSION_FILE" || echo "0")
 if [ "$task_count" -ge 2 ]; then
     echo "  [PASS] $task_count subagents dispatched"
 else
-    echo "  [FAIL] Only $task_count subagent(s) dispatched (expected >= 2)"
+    echo "  [FAIL] Only $task_count subagent/reviewer task(s) dispatched (expected >= 2)"
     FAILED=$((FAILED + 1))
 fi
 echo ""
@@ -295,9 +336,9 @@ if [ $FAILED -eq 0 ]; then
     echo "STATUS: PASSED"
     echo "All verification tests passed!"
     echo ""
-    echo "The subagent-driven-development skill correctly:"
-    echo "  ✓ Reads plan once at start"
-    echo "  ✓ Provides full task text to subagents"
+echo "The subagent-driven-development skill correctly:"
+    echo "  ✓ Reads plans once at start"
+    echo "  ✓ Provides full work package text to subagents"
     echo "  ✓ Enforces self-review"
     echo "  ✓ Runs spec compliance before code quality"
     echo "  ✓ Spec reviewer verifies independently"

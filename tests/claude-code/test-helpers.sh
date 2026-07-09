@@ -138,57 +138,91 @@ cleanup_test_project() {
     fi
 }
 
-# Create a simple plan file for testing
+# Create simple vertical slice plan files for testing
 # Usage: create_test_plan "$project_dir" "$plan_name"
 create_test_plan() {
     local project_dir="$1"
     local plan_name="${2:-test-plan}"
-    local plan_file="$project_dir/docs/superpowers/plans/$plan_name.md"
+    local plan_dir="$project_dir/docs/superpowers/2026-07-09-$plan_name/plans"
 
-    mkdir -p "$(dirname "$plan_file")"
+    mkdir -p "$plan_dir"
 
-    cat > "$plan_file" <<'EOF'
-# Test Implementation Plan
+    cat > "$plan_dir/01-create-hello-function.md" <<'EOF'
+# Create Hello Function
 
-## Task 1: Create Hello Function
+**所属任务：** 2026-07-09-test-plan
+**计划文件：** plans/01-create-hello-function.md
+**Blocked by：** None
 
-Create a simple hello function that returns "Hello, World!".
+**目标：** Create a simple hello function that returns "Hello, World!".
+**端到端范围：** Source function and test coverage.
+**技术栈：** JavaScript
 
-**File:** `src/hello.js`
+**验收标准：**
+- [ ] `hello()` returns `"Hello, World!"`
 
-**Implementation:**
+**测试策略：** B 实现优先目标验证
+**策略理由：** Simple isolated function behavior.
+**验证预算：** Allow `npm test` once.
+**验证检查点：** 立即执行
+**用户验收路径：** Run `npm test`.
+
+## 实施步骤
+
+**文件：**
+- 创建/修改：`src/hello.js`
+- 测试：`test/hello.test.js`
+
+- [ ] Implement:
 ```javascript
 export function hello() {
   return "Hello, World!";
 }
 ```
 
-**Tests:** Write a test that verifies the function returns the expected string.
+运行：`npm test`
+预期：hello test passes.
+EOF
 
-**Verification:** `npm test`
+    cat > "$plan_dir/02-create-goodbye-function.md" <<'EOF'
+# Create Goodbye Function
 
-## Task 2: Create Goodbye Function
+**所属任务：** 2026-07-09-test-plan
+**计划文件：** plans/02-create-goodbye-function.md
+**Blocked by：** plans/01-create-hello-function.md
 
-Create a goodbye function that takes a name and returns a goodbye message.
+**目标：** Create a goodbye function that takes a name and returns a goodbye message.
+**端到端范围：** Source function and test coverage.
+**技术栈：** JavaScript
 
-**File:** `src/goodbye.js`
+**验收标准：**
+- [ ] Custom name returns the expected goodbye message
+- [ ] Empty string and null behavior are tested
 
-**Implementation:**
+**测试策略：** B 实现优先目标验证
+**策略理由：** Simple isolated function behavior.
+**验证预算：** Allow `npm test` once.
+**验证检查点：** 立即执行
+**用户验收路径：** Run `npm test`.
+
+## 实施步骤
+
+**文件：**
+- 创建/修改：`src/goodbye.js`
+- 测试：`test/goodbye.test.js`
+
+- [ ] Implement:
 ```javascript
 export function goodbye(name) {
   return `Goodbye, ${name}!`;
 }
 ```
 
-**Tests:** Write tests for:
-- Default name
-- Custom name
-- Edge cases (empty string, null)
-
-**Verification:** `npm test`
+运行：`npm test`
+预期：goodbye tests pass.
 EOF
 
-    echo "$plan_file"
+    echo "$plan_dir"
 }
 
 # Export functions for use in tests

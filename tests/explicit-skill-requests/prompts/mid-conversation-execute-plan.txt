@@ -1,3 +1,3 @@
-I have a plan at docs/superpowers/plans/auth-system.md that's ready to implement.
+I have plans at docs/superpowers/2026-07-09-auth-system/plans/ that are ready to implement.
 
 subagent-driven-development, please

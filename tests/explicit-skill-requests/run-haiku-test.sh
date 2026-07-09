@@ -12,7 +12,8 @@ OUTPUT_DIR="/tmp/superpowers-tests/${TIMESTAMP}/explicit-skill-requests/haiku"
 mkdir -p "$OUTPUT_DIR"
 
 PROJECT_DIR="$OUTPUT_DIR/project"
-mkdir -p "$PROJECT_DIR/docs/superpowers/plans"
+PLAN_DIR="$PROJECT_DIR/docs/superpowers/2026-07-09-auth-system/plans"
+mkdir -p "$PLAN_DIR"
 mkdir -p "$PROJECT_DIR/.claude"
 
 echo "=== Haiku Model Test with User CLAUDE.md ==="
@@ -30,21 +31,48 @@ else
     echo "No user CLAUDE.md found, proceeding without"
 fi
 
-# Create a dummy plan file
-cat > "$PROJECT_DIR/docs/superpowers/plans/auth-system.md" << 'EOF'
-# Auth System Implementation Plan
+# Create dummy vertical slice plan files
+cat > "$PLAN_DIR/01-register-user.md" << 'EOF'
+# Register User
 
-## Task 1: Add User Model
-Create user model with email and password fields.
+**所属任务：** 2026-07-09-auth-system
+**计划文件：** plans/01-register-user.md
+**Blocked by：** None
 
-## Task 2: Add Auth Routes
-Create login and register endpoints.
+**目标：** Add user registration with email and password.
+**端到端范围：** User model, register route, tests.
+**技术栈：** Test fixture
 
-## Task 3: Add JWT Middleware
-Protect routes with JWT validation.
+**验收标准：**
+- [ ] User can register
 
-## Task 4: Write Tests
-Add comprehensive test coverage.
+**测试策略：** C 轻量核查
+**策略理由：** Fixture only.
+**验证预算：** No heavy verification.
+**验证检查点：** 完成前统一执行
+**用户验收路径：** Fixture path only.
+EOF
+
+cat > "$PLAN_DIR/02-login-user.md" << 'EOF'
+# Login User
+
+**所属任务：** 2026-07-09-auth-system
+**计划文件：** plans/02-login-user.md
+**Blocked by：** plans/01-register-user.md
+
+**目标：** Add login and JWT middleware.
+**端到端范围：** Login route, JWT middleware, tests.
+**技术栈：** Test fixture
+
+**验收标准：**
+- [ ] User can log in
+- [ ] Protected routes require JWT
+
+**测试策略：** C 轻量核查
+**策略理由：** Fixture only.
+**验证预算：** No heavy verification.
+**验证检查点：** 完成前统一执行
+**用户验收路径：** Fixture path only.
 EOF
 
 echo ""

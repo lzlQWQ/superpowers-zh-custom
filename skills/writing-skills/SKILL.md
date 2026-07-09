@@ -163,7 +163,7 @@ description: Use when [具体的触发条件和症状]
 
 ```yaml
 # 错误：总结了工作流 - Claude 可能会跟随描述而非阅读技能
-description: Use when executing plans - dispatches subagent per task with code review between tasks
+description: Use when executing plans - groups tasks into work packages and reviews each package
 
 # 错误：流程细节太多
 description: Use for TDD - write test first, watch it fail, write minimal code, refactor

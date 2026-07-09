@@ -4,7 +4,7 @@
 
 **用途：** 验证规格是否完整、一致，并为实现计划做好准备。
 
-**调度时机：** 规格文档写入 docs/superpowers/specs/ 之后
+**调度时机：** 规格文档写入 `docs/superpowers/YYYY-MM-DD-<任务名称>/specs/` 之后
 
 ```
 Task tool（通用）:

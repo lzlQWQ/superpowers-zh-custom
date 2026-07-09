@@ -62,7 +62,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 [派遣代码审查子代理]
   DESCRIPTION: 添加了 verifyIndex() 和 repairIndex()，支持 4 种问题类型
-  PLAN_OR_REQUIREMENTS: docs/superpowers/plans/deployment-plan.md 中的任务 2
+  PLAN_OR_REQUIREMENTS: docs/superpowers/2026-07-09-deployment/plans/02-verify-deployment.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 

@@ -1,8 +1,9 @@
-I have my implementation plan ready at docs/superpowers/plans/auth-system.md.
+I have my implementation plans ready at docs/superpowers/2026-07-09-auth-system/plans/.
 
 I want to use subagent-driven-development to execute it. That means:
-- Dispatch a fresh subagent for each task in the plan
-- Review the output between tasks
+- Build a dependency graph and group related small tasks into safe work packages
+- Dispatch subagents per work package, not mechanically by task count
+- Review the output between work packages
 - Keep iteration fast within this conversation
 
-Let's start - please read the plan and begin dispatching subagents for each task.
+Let's start - please read the plans, group the work packages, and begin dispatching subagents.
