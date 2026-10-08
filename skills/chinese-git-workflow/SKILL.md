@@ -7,6 +7,10 @@ metadata:
   hermes:
     tags: [git, chinese]
 ---
+## 定制验证规则
+
+本节是 superpowers-zh 的增量内容。开发、审查或运行检查前读取 [分级验证策略](../using-superpowers/references/verification-policy.md)。正式规划与执行仅用户原生命令启动；本技能、示例和子代理不能替用户调用。检查、修复、基线及领域验证使用共享预算，已有有效证据不重复运行。纯读取和会话诊断不需要编译验证。参考模板中的测试项按任务策略适用，不新增强制关卡。
+
 
 # 国内 Git 工作流规范
 

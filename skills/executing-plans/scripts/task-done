@@ -9,22 +9,48 @@
 # Exit: the test command's exit status.
 set -euo pipefail
 
-if [ $# -lt 5 ] || [ "$4" != "--" ]; then
-  echo "usage: task-done PLAN_FILE TASK_NUMBER BASE -- TEST_COMMAND [ARGS...]" >&2
+if [ $# -lt 5 ]; then
+  echo "usage: task-done PLAN_FILE TASK_NUMBER BASE --evidence WORKSPACE | --manual-evidence REPORT | -- LEGACY_COMMAND [ARGS...]" >&2
   exit 2
 fi
 
 plan=$1
 n=$2
 base=$3
+mode=$4
 shift 4
 sdd="$(cd "$(dirname "$0")/../../subagent-driven-development/scripts" && pwd)"
 
 git rev-parse --verify --quiet "$base" >/dev/null || { echo "bad BASE: $base" >&2; exit 2; }
 
-dir=$("$sdd/sdd-workspace" "$plan")
+dir=$("${BASH:-bash}" "$sdd/sdd-workspace" "$plan")
 log="$dir/task-${n}-tests.log"
 ledger="$dir/progress.md"
+
+if [ "$mode" = "--evidence" ]; then
+  [ $# -eq 1 ] || { echo "--evidence requires WORKSPACE" >&2; exit 2; }
+  verify="$sdd/../../using-superpowers/scripts/verify.mjs"
+  result=$(node "$verify" complete "$1" "$n") || exit $?
+  [ -f "$ledger" ] || printf '# 进度账本 — %s\n' "$plan" > "$ledger"
+  printf 'Task %s: complete (commits %s..%s, evidence: %s/verification.json)\n' "$n" "$(git rev-parse --short=7 "$base")" "$(git rev-parse --short=7 HEAD)" "$1" >> "$ledger"
+  printf '%s\n' "$result"
+  exit 0
+fi
+
+if [ "$mode" = "--manual-evidence" ]; then
+  [ $# -eq 1 ] && [ -s "$1" ] || { echo "缺少人工证据报告" >&2; exit 2; }
+  # 人工核查不冒充脚本验证：明确保留核查范围、命令、结果与限制。
+  grep -q '^Status: verified$' "$1" && grep -q '^Policy:' "$1" && grep -q '^Scope:' "$1" && grep -q '^Command:' "$1" && grep -q '^Result:' "$1" || { echo "人工报告缺少必需字段" >&2; exit 2; }
+  [ -f "$ledger" ] || printf '# 进度账本 — %s\n' "$plan" > "$ledger"
+  printf 'Task %s: complete (manual evidence: %s; validity checked by controller)\n' "$n" "$1" >> "$ledger"
+  exit 0
+fi
+
+[ "$mode" = "--" ] || { echo "未知完成模式" >&2; exit 2; }
+if grep -q 'verification-policy' "$plan" || [ -f "$dir/verification.json" ]; then
+  echo "分级计划必须使用 --evidence 或 --manual-evidence，不能重复运行旧完成命令" >&2
+  exit 2
+fi
 
 # Render the command the way a person would type it, for the ledger line.
 cmd=""

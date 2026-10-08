@@ -44,7 +44,7 @@ OpenClaw 按以下优先级加载 skills：
 # CLAUDE.md
 
 本项目使用 superpowers-zh skills 框架。
-优先使用 brainstorming（头脑风暴）开始新任务。
+正式头脑风暴、写计划和执行计划仅通过用户原生命令启动。
 Skills 位于 skills/ 目录下。
 ```
 
@@ -64,12 +64,12 @@ OpenClaw 与 Claude Code 使用相同的工具名称，skills 无需额外适配
 
 安装完成后重启 OpenClaw，所有 skills 会自动生效。AI 会按任务上下文自动调用对应 skill：
 
-- 新任务 / 新功能 → `brainstorming`（头脑风暴）
+- 用户原生命令 → `brainstorming`（头脑风暴）；新功能需求不自动触发
 - 写 commit message → `chinese-commit-conventions`（中文 commit 规范）
 - 调试问题 → `systematic-debugging`
 - 完成任务后 → `requesting-code-review`（请求代码审查）
 
-无需手动 slash command 触发 —— AI 通过 skill frontmatter 的 `description` 字段自主选择匹配的 skill。如果想强制触发某个 skill，直接在指令里点名："用 brainstorming 帮我想一下 X 怎么做"。
+遵守技能调用边界：正式规划与执行需要用户原生命令，其他技能可按情境选择。
 
 ## 全局 Skills
 
@@ -103,3 +103,11 @@ npx superpowers-zh
 
 - 提交 Issue：https://github.com/jnMetaCode/superpowers-zh/issues
 - QQ 群：833585047
+
+## 本地定制版调用与验证
+
+brainstorming、writing-plans、executing-plans、subagent-driven-development 仅通过用户原生命令启动，阶段批准不自动衔接。Claude Code 插件使用 /superpowers-zh:技能名，目录安装使用 /技能名；Codex 使用 $技能名。其他平台使用其原生入口；没有已验证原生限制的平台采用描述与引导约束，不承诺硬性阻止。
+
+low：自查后一次编译、语法或结构检查；medium：相关功能集中验证，失败后最多两轮定向修复；high：关键行为红绿、独立审查和集中完整验证。验证预算与证据跨角色共享，TDD 不再无条件适用。以 skills/using-superpowers/references/verification-policy.md 为准，历史示例中的自动规划和强制测试不适用于本定制版。
+
+升级：复制安装和 npx 安装需要重新安装以更新技能及托管引导；目录链接安装更新源文件；插件安装更新插件包。更新后开启新会话，Codex、Claude Code 需重新发现技能时重启。只更新托管片段，保留用户自定义内容。

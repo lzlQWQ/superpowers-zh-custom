@@ -32,12 +32,18 @@ else
 fi
 
 awk -v n="$n" '
-  /^```/ { infence = !infence }
+  /^(```|~~~)/ { infence = !infence }
   !infence && /^#+[ \t]+(Task|任务)[ \t]*[0-9]+/ {
+    seen_task = 1
     intask = ($0 ~ ("^#+[ \t]+(Task|任务)[ \t]*" n "([^0-9]|$)"))
+    if (intask) found = 1
   }
-  intask { print }
-' "$plan" > "$out"
+  !seen_task || intask { print }
+  END { if (!found) exit 3 }
+' "$plan" > "$out" || {
+  echo "task ${n} not found in ${plan}" >&2
+  exit 3
+}
 
 if [ ! -s "$out" ]; then
   echo "task ${n} not found in ${plan} (no heading matching 'Task ${n}' / '任务 ${n}')" >&2

@@ -14,5 +14,19 @@
   "trackedPaths": [
     "skills",
     "hooks"
-  ]
+  ],
+  "customizations": {
+    "skills/using-superpowers/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/brainstorming/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/writing-plans/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/executing-plans/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/subagent-driven-development/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/test-driven-development/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/verification-before-completion/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/requesting-code-review/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/writing-skills/SKILL.md": "用户确认的手动工作流与分级验证定制；不按纯翻译标题或已移除上游流程标识符判漂移，仍检查引用、平台契约和行为",
+    "skills/subagent-driven-development/implementer-prompt.md": "共享预算和证据的角色契约",
+    "skills/subagent-driven-development/task-reviewer-prompt.md": "共享预算和证据的角色契约",
+    "skills/subagent-driven-development/re-review-prompt.md": "共享预算和证据的角色契约"
+  }
 }

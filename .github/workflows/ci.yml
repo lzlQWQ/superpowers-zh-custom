@@ -68,3 +68,6 @@ jobs:
 
       - name: Validate install script
         run: node bin/superpowers-zh.js --help
+
+      - name: 验证分级预算、平台分发与证据复用
+        run: node --test tests/verification/*.test.mjs

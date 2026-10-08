@@ -10,6 +10,10 @@ set -e
 SKILL_NAME="$1"
 PROMPT_FILE="$2"
 MAX_TURNS="${3:-3}"
+EXPECTED="${4:-triggered}"
+case "$SKILL_NAME" in
+  brainstorming|writing-plans|executing-plans|subagent-driven-development) EXPECTED=not-triggered ;;
+esac
 
 if [ -z "$SKILL_NAME" ] || [ -z "$PROMPT_FILE" ]; then
     echo "Usage: $0 <skill-name> <prompt-file> [max-turns]"
@@ -60,10 +64,8 @@ echo "=== Results ==="
 # Match either "skill":"skillname" or "skill":"namespace:skillname"
 SKILL_PATTERN='"skill":"([^"]*:)?'"${SKILL_NAME}"'"'
 if grep -q '"name":"Skill"' "$LOG_FILE" && grep -qE "$SKILL_PATTERN" "$LOG_FILE"; then
-    echo "✅ PASS: Skill '$SKILL_NAME' was triggered"
     TRIGGERED=true
 else
-    echo "❌ FAIL: Skill '$SKILL_NAME' was NOT triggered"
     TRIGGERED=false
 fi
 
@@ -81,7 +83,11 @@ echo ""
 echo "Full log: $LOG_FILE"
 echo "Timestamp: $TIMESTAMP"
 
-if [ "$TRIGGERED" = "true" ]; then
+if [ "$EXPECTED" = "not-triggered" ] && [ "$TRIGGERED" = "false" ]; then
+    echo "PASS: 手动技能没有被普通需求启动"
+    exit 0
+elif [ "$EXPECTED" = "triggered" ] && [ "$TRIGGERED" = "true" ]; then
+    echo "PASS: 情境技能已触发"
     exit 0
 else
     exit 1

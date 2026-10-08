@@ -35,6 +35,11 @@ bad()  { FAIL=$((FAIL+1)); FAILURES+=("$1"); echo "  ❌ $1"; }
 warn() { WARN=$((WARN+1)); WARNINGS+=("$1"); echo "  ⚠️  $1"; }
 hdr()  { echo ""; echo "=== $1 ==="; }
 
+# 定制文件只跳过纯翻译一致性；引用、脚本和平台检查仍执行。
+is_custom() {
+  node -e 'const s=JSON.parse(require("fs").readFileSync(".upstream-sync.json","utf8"));process.exit(s.customizations?.[process.argv[1]] ? 0 : 1)' "$1"
+}
+
 # 确保有 upstream remote（CI 上需要 fetch）
 ensure_upstream() {
   if [ "$NO_UPSTREAM" = "1" ]; then return 1; fi
@@ -63,6 +68,7 @@ while IFS= read -r f; do
 done < <(find . -name "*.json" \
             -not -path "./node_modules/*" \
             -not -path "./.git/*" \
+            -not -path "./.superpowers/*" \
             -not -path "./tests/*/node_modules/*")
 
 # 1b. SKILL.md frontmatter 完整性
@@ -216,6 +222,7 @@ else
     writing-plans writing-skills)
 
   for s in "${SKILLS[@]}"; do
+    if is_custom "skills/$s/SKILL.md"; then ok; continue; fi
     up=$(git show upstream/main:skills/$s/SKILL.md 2>/dev/null | count_headings || echo 0)
     our=$(count_headings < "skills/$s/SKILL.md" 2>/dev/null || echo 0)
     diff=$((up - our))
@@ -235,6 +242,7 @@ else
   # 不会各自漂移。没打标记就多出章节 = 隐性分叉，下次同步时会被误当成漏译。
   FORK_MARK='本节是 superpowers-zh 的增量内容'
   for s in "${SKILLS[@]}"; do
+    if is_custom "skills/$s/SKILL.md"; then ok; continue; fi
     up=$(git show upstream/main:skills/$s/SKILL.md 2>/dev/null | count_headings || echo 0)
     our=$(count_headings < "skills/$s/SKILL.md" 2>/dev/null || echo 0)
     # 注意：grep -c 找到 0 个时输出 "0" 但退出码为 1，写成 `|| echo 0` 会拼出
@@ -311,11 +319,14 @@ else
       const fs = require("fs");
       const pat = /(--[a-z][a-z0-9-]{2,}|\$\{?[A-Z_]{3,}\}?|[\w./-]+\.(?:sh|js|mjs|md|json|py|ts|html)\b|scripts\/[\w-]+)/g;
       let allow = {};
+      let custom = {};
       try { allow = JSON.parse(fs.readFileSync(".upstream-sync.json", "utf8")).identifierAllow || {}; } catch {}
+      try { custom = JSON.parse(fs.readFileSync(".upstream-sync.json", "utf8")).customizations || {}; } catch {}
       const files = execSync("git ls-tree -r --name-only upstream/main skills").toString().split("\n")
         .filter(f => f.endsWith(".md") && fs.existsSync(f));
       const out = [];
       for (const f of files) {
+        if (custom[f]) continue;
         const norm = t => t.replace(/\\/g, "");
         const up = new Set((norm(execSync("git show upstream/main:" + f).toString()).match(pat)) || []);
         const ours = new Set((norm(fs.readFileSync(f, "utf8")).match(pat)) || []);

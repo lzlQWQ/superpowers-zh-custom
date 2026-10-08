@@ -224,6 +224,15 @@ function countDirs(dir) {
   return readdirSync(dir, { withFileTypes: true }).filter(e => e.isDirectory()).length;
 }
 
+function commonBootstrapRules() {
+  return [
+    '1. **原生命令启动正式工作流** — brainstorming、writing-plans、executing-plans、subagent-driven-development 仅用户调用；普通需求、阶段批准、其他技能和子代理不触发，也不能读取文件绕过限制',
+    '2. **先确定任务等级** — 读取 using-superpowers/references/verification-policy.md；风险、未知项和复杂度决定 low/medium/high，普通开发无需正式规划',
+    '3. **集中验证并共享预算** — low 一次编译或语法检查；medium 首轮集中检查和最多两轮定向修复；high 关键行为红绿和集中完整验证；TDD 仅在策略选择时使用',
+    '4. **复用有效证据** — 完成、审查、换代理和收尾不重复运行；相关代码变化使证据失效；失败或额度耗尽不能报告完成',
+  ].join('\n');
+}
+
 function scanSkillEntries(skillsDir) {
   const entries = [];
   if (!existsSync(skillsDir)) return entries;
@@ -240,6 +249,7 @@ function scanSkillEntries(skillsDir) {
       entries.push({
         name: nameMatch[1].trim(),
         desc: descMatch ? descMatch[1].trim() : '',
+        invocation: /^disable-model-invocation:\s*true\s*$/m.test(fmMatch[1]) ? 'manual' : 'context',
       });
     }
   }
@@ -272,10 +282,7 @@ alwaysApply: true
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -287,7 +294,7 @@ ${skillTable}
 
 ## 如何使用
 
-当任务匹配某个 skill 的触发条件时，读取对应的 \`.trae/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 的触发条件时，读取对应的 \`.trae/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   const rulePath = resolve(rulesDir, 'superpowers-zh.md');
@@ -313,10 +320,7 @@ function generateClineBootstrapRule(projectDir) {
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -328,7 +332,7 @@ ${skillTable}
 
 ## 如何使用
 
-当任务匹配某个 skill 的触发条件时，用读文件工具打开对应的
+在遵守调用边界且任务匹配某个 skill 的触发条件时，用读文件工具打开对应的
 \`.cline/skills/<skill-name>/SKILL.md\`，并严格遵循其流程。
 
 **不要**把 skill 正文复制到本文件 —— \`.clinerules/\` 里的内容每轮都进 prompt，
@@ -375,10 +379,7 @@ inclusion: always
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -390,7 +391,7 @@ ${skillTable}
 
 ## 如何使用
 
-当任务匹配某个 skill 的触发条件时，用读文件工具打开对应的
+在遵守调用边界且任务匹配某个 skill 的触发条件时，用读文件工具打开对应的
 \`.kiro/skills/<skill-name>/SKILL.md\`，并严格遵循其流程。
 
 **不要**把 skill 正文复制到本文件 —— \`.kiro/steering/\` 里的内容每轮都进 prompt，
@@ -419,10 +420,7 @@ function generateKiloCodeBootstrapRule(projectDir) {
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -434,7 +432,7 @@ ${skillTable}
 
 ## 如何使用
 
-当任务匹配某个 skill 的触发条件时，用读文件工具打开对应的
+在遵守调用边界且任务匹配某个 skill 的触发条件时，用读文件工具打开对应的
 \`.kilocode/skills/<skill-name>/SKILL.md\`，并严格遵循其流程。
 
 **不要**把 skill 正文复制到本文件 —— rules 每轮都进 prompt，按需读取才能把
@@ -470,10 +468,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -485,7 +480,7 @@ ${skillTable}
 
 ## 如何使用
 
-当任务匹配某个 skill 的触发条件时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。也可输入 \`/<skill-name>\` 显式调用。
+在遵守调用边界且任务匹配某个 skill 的触发条件时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。也可输入 \`/<skill-name>\` 显式调用。
 `;
 
   const rulePath = resolve(rulesDir, 'superpowers-zh.md');
@@ -505,10 +500,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -518,7 +510,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   // 写入 .agents/rules.md（不覆盖用户已有的 GEMINI.md / AGENTS.md）；全局装到 ~/.agents/rules.md
@@ -537,10 +529,7 @@ function generateAiderBootstrap(projectDir) {
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -550,7 +539,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`.aider/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`.aider/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   // 写入 CONVENTIONS.md。注意：Aider **不会**自动加载这个文件（见 TARGETS 里的
@@ -595,10 +584,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -608,7 +594,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   // 写入 GEMINI.md（如果已存在则追加）；全局装到 ~/.gemini/GEMINI.md
@@ -647,10 +633,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -660,7 +643,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   const qwenPath = isGlobal ? resolve(baseDir, '.qwen', 'QWEN.md') : resolve(baseDir, 'QWEN.md');
@@ -703,10 +686,7 @@ description: superpowers-zh 技能框架的索引与触发规则
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -718,7 +698,7 @@ ${skillTable}
 
 ## 如何使用
 
-当任务匹配某个 skill 的触发条件时，读取对应的
+在遵守调用边界且任务匹配某个 skill 的触发条件时，读取对应的
 \`.github/superpowers/<skill-name>/SKILL.md\` 并严格遵循其流程。
 
 **不要**把 skill 正文复制到本文件 —— 本文件对每个请求都生效，按需读取才能把
@@ -742,10 +722,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -755,7 +732,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`.claw/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`.claw/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   const mdPath = resolve(projectDir, 'CLAW.md');
@@ -801,10 +778,7 @@ function generateHermesBootstrap(projectDir, isGlobal) {
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 工具映射
 
@@ -828,7 +802,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，使用 \`skill_view\` 加载对应 skill 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，使用 \`skill_view\` 加载对应 skill 并严格遵循其流程。
 `;
 
   // 写入项目根的 AGENTS.md。
@@ -886,10 +860,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -899,7 +870,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，使用 \`Skill\` 工具加载对应 skill 并严格遵循其流程。绝不要用 Read 工具读取 SKILL.md 文件。
+在遵守调用边界且任务匹配某个 skill 时，使用 \`Skill\` 工具加载对应 skill 并严格遵循其流程。绝不要用 Read 工具读取 SKILL.md 文件。
 
 如果你认为哪怕只有 1% 的可能性某个 skill 适用于你正在做的事情，你必须调用该 skill 检查。
 `;
@@ -936,10 +907,7 @@ function generateReasonixBootstrap(projectDir) {
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -949,7 +917,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`.reasonix/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`.reasonix/skills/<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   const mdPath = resolve(projectDir, 'REASONIX.md');
@@ -989,10 +957,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -1002,7 +967,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   // 全局指令文件 ~/.dsh/AGENTS.md；项目级放项目根 AGENTS.md（两者都是官方默认候选）
@@ -1034,10 +999,7 @@ ${scope}（${skillEntries.length} 个 skills）。
 
 ## 核心规则
 
-1. **收到任务时，先检查是否有匹配的 skill** — 哪怕只有 1% 的可能性也要检查
-2. **设计先于编码** — 收到功能需求时，先用 brainstorming skill 做需求分析
-3. **测试先于实现** — 写代码前先写测试（TDD）
-4. **验证先于完成** — 声称完成前必须运行验证命令
+${commonBootstrapRules()}
 
 ## 可用 Skills
 
@@ -1047,7 +1009,7 @@ ${skillList}
 
 ## 如何使用
 
-当任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
+在遵守调用边界且任务匹配某个 skill 时，读取对应的 \`${skillsRef}<skill-name>/SKILL.md\` 并严格遵循其流程。
 `;
 
   // 全局记忆文件在 ~/.codebuddy/CODEBUDDY.md；项目级放项目根（官方称两处等价）

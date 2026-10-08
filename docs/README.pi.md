@@ -52,3 +52,11 @@ bash tests/pi/run-tests.sh
 该测试动态加载扩展并校验：声明了 `pi` 包配置、注册了正确的生命周期钩子（且无 pre-compaction 注入）、`resources_discover` 贡献了 `skills/` 目录、`session_start` 注入了「You have superpowers」+「Pi tool mapping」、pi-tools 参考文档存在。
 
 > 注：扩展是 TypeScript（仅 `import type`，运行时无类型依赖）。Node 22.6–23.5 需 `--experimental-strip-types`（run-tests.sh 已带），23.6+ 默认支持。
+
+## 本地定制版调用与验证
+
+brainstorming、writing-plans、executing-plans、subagent-driven-development 仅通过用户原生命令启动，阶段批准不自动衔接。Claude Code 插件使用 /superpowers-zh:技能名，目录安装使用 /技能名；Codex 使用 $技能名。其他平台使用其原生入口；没有已验证原生限制的平台采用描述与引导约束，不承诺硬性阻止。
+
+low：自查后一次编译、语法或结构检查；medium：相关功能集中验证，失败后最多两轮定向修复；high：关键行为红绿、独立审查和集中完整验证。验证预算与证据跨角色共享，TDD 不再无条件适用。以 skills/using-superpowers/references/verification-policy.md 为准，历史示例中的自动规划和强制测试不适用于本定制版。
+
+升级：复制安装和 npx 安装需要重新安装以更新技能及托管引导；目录链接安装更新源文件；插件安装更新插件包。更新后开启新会话，Codex、Claude Code 需重新发现技能时重启。只更新托管片段，保留用户自定义内容。

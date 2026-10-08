@@ -73,7 +73,7 @@ cp -r superpowers-zh/skills/* /your/project/.qwen/skills/
 
 装好重启 Qwen Code：
 
-- 直接描述任务，bootstrap 会引导它匹配 skill：「帮我加一个导出功能」应先触发 brainstorming 做需求分析，而不是直接写代码
+- 直接描述任务，bootstrap 会引导它匹配 skill：「帮我加一个导出功能」不自动触发 brainstorming，按等级正常开发
 - 也可以点名：「用 brainstorming 分析这个需求」
 - 用 `/memory show` 可以查看当前拼接进上下文的内容，确认 bootstrap 是否被加载
 
@@ -92,3 +92,11 @@ npx superpowers-zh --global --uninstall   # 全局
 - Qwen Code 仓库：https://github.com/QwenLM/qwen-code
 - Qwen Code Skills 文档：https://qwenlm.github.io/qwen-code-docs/en/users/features/skills/
 - Qwen Code 记忆文档：https://qwenlm.github.io/qwen-code-docs/en/users/features/memory/
+
+## 本地定制版调用与验证
+
+brainstorming、writing-plans、executing-plans、subagent-driven-development 仅通过用户原生命令启动，阶段批准不自动衔接。Claude Code 插件使用 /superpowers-zh:技能名，目录安装使用 /技能名；Codex 使用 $技能名。其他平台使用其原生入口；没有已验证原生限制的平台采用描述与引导约束，不承诺硬性阻止。
+
+low：自查后一次编译、语法或结构检查；medium：相关功能集中验证，失败后最多两轮定向修复；high：关键行为红绿、独立审查和集中完整验证。验证预算与证据跨角色共享，TDD 不再无条件适用。以 skills/using-superpowers/references/verification-policy.md 为准，历史示例中的自动规划和强制测试不适用于本定制版。
+
+升级：复制安装和 npx 安装需要重新安装以更新技能及托管引导；目录链接安装更新源文件；插件安装更新插件包。更新后开启新会话，Codex、Claude Code 需重新发现技能时重启。只更新托管片段，保留用户自定义内容。

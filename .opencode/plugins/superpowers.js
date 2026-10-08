@@ -304,6 +304,7 @@ async function setup(ctx) {
           id: entry.name,
           name: frontmatter.name || entry.name,
           ...(frontmatter.description ? { description: frontmatter.description } : {}),
+          ...(frontmatter['disable-model-invocation'] === 'true' ? { autoinvoke: false } : {}),
           // Skill.Info renamed its required file field `location` -> `path`
           // in OpenCode v2.0.4 (upstream commit 199aabe9e2).
           path: skillPath,

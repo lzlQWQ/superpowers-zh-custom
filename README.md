@@ -235,15 +235,15 @@ AI：在开始实现之前，我需要了解几个关键问题：
 |-------|------|
 | **头脑风暴** (brainstorming) | 需求分析 → 设计规格，不写代码先想清楚 |
 | **编写计划** (writing-plans) | 把规格拆成可执行的实施步骤 |
-| **执行计划** (executing-plans) | 按计划逐步实施，每步验证 |
-| **测试驱动开发** (test-driven-development) | 严格 TDD：先写测试，再写代码 |
+| **执行计划** (executing-plans) | 用户手动启动，按任务策略集中实施与验证 |
+| **测试驱动开发** (test-driven-development) | 按任务策略选择行为 TDD，普通任务集中验证 |
 | **系统化调试** (systematic-debugging) | 四阶段调试法：定位→分析→假设→修复 |
 | **诊断 Superpowers** (diagnosing-superpowers) | 会话跑偏时读 transcript 取证，每条结论带 `path:line`，可整理成 issue |
 | **请求代码审查** (requesting-code-review) | 派遣审查 agent 检查代码质量 |
 | **接收代码审查** (receiving-code-review) | 技术严谨地处理审查反馈，拒绝敷衍 |
 | **完成前验证** (verification-before-completion) | 证据先行——声称完成前必须跑验证 |
 | **派遣并行 Agent** (dispatching-parallel-agents) | 多任务并发执行 |
-| **子 Agent 驱动开发** (subagent-driven-development) | 每个任务一个 agent，两轮审查 |
+| **子 Agent 驱动开发** (subagent-driven-development) | 子代理实现，审查力度由任务等级决定 |
 | **Git Worktree 使用** (using-git-worktrees) | 隔离式特性开发 |
 | **完成开发分支** (finishing-a-development-branch) | 合并/PR/保留/丢弃四选一 |
 | **编写 Skills** (writing-skills) | 创建新 skill 的方法论 |
@@ -534,3 +534,11 @@ MIT License — 自由使用，商业或个人均可。
     <img alt="superpowers-zh 的 GitHub Star 增长曲线" src="https://api.star-history.com/svg?repos=jnMetaCode/superpowers-zh&type=Date">
   </picture>
 </a>
+
+## 本地定制版调用与验证
+
+brainstorming、writing-plans、executing-plans、subagent-driven-development 仅通过用户原生命令启动，阶段批准不自动衔接。Claude Code 插件使用 /superpowers-zh:技能名，目录安装使用 /技能名；Codex 使用 $技能名。其他平台使用其原生入口；没有已验证原生限制的平台采用描述与引导约束，不承诺硬性阻止。
+
+low：自查后一次编译、语法或结构检查；medium：相关功能集中验证，失败后最多两轮定向修复；high：关键行为红绿、独立审查和集中完整验证。验证预算与证据跨角色共享，TDD 不再无条件适用。以 skills/using-superpowers/references/verification-policy.md 为准，历史示例中的自动规划和强制测试不适用于本定制版。
+
+升级：复制安装和 npx 安装需要重新安装以更新技能及托管引导；目录链接安装更新源文件；插件安装更新插件包。更新后开启新会话，Codex、Claude Code 需重新发现技能时重启。只更新托管片段，保留用户自定义内容。

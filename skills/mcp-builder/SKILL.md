@@ -7,6 +7,10 @@ metadata:
   hermes:
     tags: [mcp, development]
 ---
+## 定制验证规则
+
+本节是 superpowers-zh 的增量内容。开发、审查或运行检查前读取 [分级验证策略](../using-superpowers/references/verification-policy.md)。正式规划与执行仅用户原生命令启动；本技能、示例和子代理不能替用户调用。检查、修复、基线及领域验证使用共享预算，已有有效证据不重复运行。纯读取和会话诊断不需要编译验证。参考模板中的测试项按任务策略适用，不新增强制关卡。
+
 
 # MCP 服务器构建
 
@@ -162,7 +166,7 @@ npx @modelcontextprotocol/inspector node dist/index.js
 
 在浏览器中查看所有 tools/resources，手动调用并查看结果。
 
-**测试要点：** 每个 Tool 覆盖正常 + 异常路径、边界值、外部服务失败模拟。
+**测试要点：** 按具体工具风险选择正常、异常、边界和外部失败场景；协议及客户端检查集中纳入预算，不逐工具重复整套验证。
 
 ## 7. 安全考虑
 
@@ -249,10 +253,9 @@ server.sendLoggingMessage({ level: "info", data: "处理中" });
 - [ ] 敏感数据走环境变量
 
 ### 测试
-- [ ] 核心逻辑有单元测试
-- [ ] 有集成测试验证 MCP 协议交互
-- [ ] 用 MCP Inspector 手动验证过
-- [ ] 用真实 AI 客户端测试过
+- [ ] 按有效策略核查核心逻辑与必要协议交互
+- [ ] Inspector、SDK 或真实客户端验证已选择适用项并纳入预算
+- [ ] 不适用或未验证项已明确说明
 
 ### 部署
 - [ ] README 含安装和配置说明

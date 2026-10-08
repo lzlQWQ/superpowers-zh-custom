@@ -104,14 +104,11 @@ Codex 原生支持 skill 发现——启动时扫描 `~/.agents/skills/` 目录�
 ~/.agents/skills/superpowers/ → ~/.codex/superpowers-zh/skills/
 ```
 
-`using-superpowers` skill 会自动被发现并强制执行 skill 使用纪律——无需额外配置。
+技能由原生机制发现。四个正式工作流技能提供 agents/openai.yaml，以禁用隐式调用；using-superpowers 提供分级路由。
 
 ## 使用
 
-Skills 自动发现。Codex 在以下情况激活 skills：
-- 你提到 skill 名称（如 "use brainstorming"）
-- 任务匹配 skill 的描述
-- `using-superpowers` skill 指示 Codex 使用某个 skill
+Skills 自动发现。四个正式工作流技能仅通过 $技能名启动；其他技能按调用边界匹配任务。using-superpowers 不会替用户启动手动阶段。
 
 ## 更新
 
@@ -138,3 +135,11 @@ Remove-Item "$env:USERPROFILE\.agents\skills\superpowers"
 
 - 提交 Issue：https://github.com/jnMetaCode/superpowers-zh/issues
 - 项目主页：https://github.com/jnMetaCode/superpowers-zh
+
+## 本地定制版调用与验证
+
+brainstorming、writing-plans、executing-plans、subagent-driven-development 仅通过用户原生命令启动，阶段批准不自动衔接。Claude Code 插件使用 /superpowers-zh:技能名，目录安装使用 /技能名；Codex 使用 $技能名。其他平台使用其原生入口；没有已验证原生限制的平台采用描述与引导约束，不承诺硬性阻止。
+
+low：自查后一次编译、语法或结构检查；medium：相关功能集中验证，失败后最多两轮定向修复；high：关键行为红绿、独立审查和集中完整验证。验证预算与证据跨角色共享，TDD 不再无条件适用。以 skills/using-superpowers/references/verification-policy.md 为准，历史示例中的自动规划和强制测试不适用于本定制版。
+
+升级：复制安装和 npx 安装需要重新安装以更新技能及托管引导；目录链接安装更新源文件；插件安装更新插件包。更新后开启新会话，Codex、Claude Code 需重新发现技能时重启。只更新托管片段，保留用户自定义内容。

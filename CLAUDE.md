@@ -118,3 +118,7 @@ Skill 不是普通文档 —— 它是塑造 agent 行为的代码。如果你�
 - 真人必须 review 完整 diff 后再提交
 
 **特别提示：** 中文化内容、`chinese-*` skill、针对国内 IDE 的工具适配等改动，按上游 "Fork-specific changes" 规则向 `obra/superpowers` 提 PR 会被关闭 —— 这类内容**只提到本 fork**。
+
+## 本地定制版验收与上游差异
+
+本工作区经用户确认采用手动正式工作流和分级验证。前文上游集成验收中的“普通需求自动触发 brainstorming”不适用于本定制版；改为普通需求不触发、原生命令可触发。技能改造按共享策略集中做行为对照和脚本验证，不逐文件强制红灯。定制差异登记在 .upstream-sync.json 的 customizations；同步上游时保留，不能恢复无条件 TDD 和全套件。PR、发布和用户审批规则保持适用。
